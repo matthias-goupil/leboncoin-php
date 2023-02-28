@@ -15,10 +15,10 @@ class ConfigurationProduction extends ConfigurationGlobal
     const repositoryManager = [
         "manager" => RepositoryManagerMySQL::class,
         "dataSourceParameters" => [
-            'hostname' => '',
-            'database' => '',
-            'login' => '',
-            'password' => ''
+            'hostname' => 'webinfo.iutmontp.univ-montp2.fr',
+            'database' => 'goupilm',
+            'login' => 'goupilm',
+            'password' => '071043647CG'
         ]
     ];
 }
