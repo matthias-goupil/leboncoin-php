@@ -2,6 +2,9 @@
 
 namespace Config;
 
+use PHPMailer\PHPMailer\PHPMailer;
+use TheFeed\Business\Services\PDFService;
+use TheFeed\Business\Services\MailService;
 use Framework\Services\ServerSessionManager;
 use Symfony\Component\DependencyInjection\Reference;
 use TheFeed\Application\API\PublicationControllerAPI;
@@ -160,6 +163,15 @@ class ConfigurationGlobal
                 "%profile_pictures_storage%"
             ])
         ;
+        $container->register('mail_service', MailService::class)
+            ->setArguments([
+                               new PHPMailer(),
+                               "%from_email%",
+                               "%from_name%"
+           ])
+        ;
+
+        $container->register('pdf_generator', PDFService::class);
         $container->register('app_listener', AppListener::class)
             ->setArguments([
                 new Reference('utilisateur_service'),

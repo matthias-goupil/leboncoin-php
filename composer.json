@@ -6,7 +6,8 @@
         "symfony/dependency-injection": "^5.1",
         "twig/twig": "^3.4",
         "ext-pdo": "*",
-        "symfony/mime": "^5.4"
+        "symfony/mime": "^5.4",
+        "phpmailer/phpmailer": "^6.7"
     },
 
     "autoload": {
