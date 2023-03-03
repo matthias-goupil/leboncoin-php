@@ -1,3 +1,2 @@
-<?php 
-
-echo "oui";
+<?php
+print_r($container);

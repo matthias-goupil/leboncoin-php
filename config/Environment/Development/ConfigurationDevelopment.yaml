@@ -1,0 +1,12 @@
+namespace: Config\Environment\Development
+
+extends: Config\ConfigurationGlobal
+
+debug: true
+
+environment: development
+
+repositoryManager:
+  manager: Framework\Storage\SQL\RepositoryManagerSQLite
+  dataSourceParameters:
+    file: __DIR__.'/database_development'
