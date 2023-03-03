@@ -59,6 +59,13 @@ class ConfigurationGlobal
                 "_controller" => "publication_controller::feed",
             ]
         ],
+        "feedPDF" => [
+            "path" => "/pdf",
+            "methods" => ["GET"],
+            "parameters" => [
+                "_controller" => "publication_controller::feedPDF",
+            ]
+        ],
         "submit_feedy" => [
             "path" => "/feedy",
             "methods" => ["POST"],
@@ -170,7 +177,6 @@ class ConfigurationGlobal
                                "%from_name%"
            ])
         ;
-
         $container->register('pdf_generator', PDFService::class);
         $container->register('app_listener', AppListener::class)
             ->setArguments([

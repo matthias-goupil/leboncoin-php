@@ -6,19 +6,10 @@ use Framework\Application\Controller;
 use TheFeed\Business\Services\PDFService;
 use Symfony\Component\HttpFoundation\Request;
 use TheFeed\Business\Exception\ServiceException;
+use Symfony\Component\HttpFoundation\Response;
 
 class PublicationController extends Controller
 {
-
-    private PDFService $pdfGenerator;
-
-    /**
-     * @param PDFService $pdfGenerator
-     */
-    public function __construct(PDFService $pdfGenerator)
-    {
-        $this->pdfGenerator = $pdfGenerator;
-    }
 
     public function feed() {
         $service = $this->container->get('publication_service');
@@ -41,11 +32,15 @@ class PublicationController extends Controller
 
     public function feedPDF() {
         // Génère le contenu HTML pour le PDF
-        $html = $this->feed();
+        $servicePDF = $this->container->get('pdf_generator');
+        $html =  $this->feed()->getContent();
+        $html = str_replace('<script', '<!-- script', $html); // masque l'ouverture de la balise script
+        $html = str_replace('</script>', '</script -->', $html); // masque la fermeture de la balise script
+        $html = preg_replace('#<!--\s*script\s*(.*?)\s*-->\s*#is', '', $html); // supprime toutes les balises script
 
         // Génère le PDF et retourne la réponse
         return new Response(
-            $this->pdfGenerator->generatePdf($html),
+            $servicePDF->generatePDF($html),
             200,
             array(
                 'Content-Type' => 'application/pdf',
