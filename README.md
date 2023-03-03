@@ -46,4 +46,4 @@ Ce projet est réalisé par
  + Mehdi SAHARI *(https://github.com/Mehdi-Shr)*
 
 ## Trello : 
-Lien du Trello : *(https://trello.com/b/XbkCKmW0/php-le-mauvais-coin)*
+Lien du Trello : *https://trello.com/b/XbkCKmW0/php-le-mauvais-coin*
