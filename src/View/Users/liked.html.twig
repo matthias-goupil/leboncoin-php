@@ -1,0 +1,26 @@
+{% extends "base.html.twig" %}
+
+{% block page_title %}Profil{% endblock %}
+
+{% block page_content %}
+    <main>
+        <h1>Mes favoris</h1>
+        <div id="anouncements-list">
+            {% for announcement in liked %}
+                <a class="announcement" href="#">
+                    <img src="{{ announcement.picture }}" alt=""/>
+                    <div>
+                        <p class="title">{{ announcement.name }}</p>
+                        <p class="price">Price €</p>
+                        <div class="adress">
+                            <p>{{ announcement.adress }}</p>
+                            <p>{{ announcement.city }} {{ announcement.postalcode }}</p>
+                        </div>
+                    </div>
+                </a>
+            {% else %}
+                <p>Aucune annonce n'est en favoris</p>
+            {% endfor %}
+        </div>
+    </main>
+{% endblock %}

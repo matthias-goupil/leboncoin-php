@@ -13,7 +13,7 @@ class ConfigurationProduction extends ConfigurationGlobal
 
     //A configurer
     const repositoryManager = [
-        "manager" => RepositoryManagerMySQL::class,
+        "manager" => \Framework\Storage\Doctrine\RepositoryManagerMySQL::class,
         "dataSourceParameters" => [
             'hostname' => 'webinfo.iutmontp.univ-montp2.fr',
             'database' => 'goupilm',

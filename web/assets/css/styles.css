@@ -1,6 +1,15 @@
 /* Mise en page générale */
 
+* {
+    padding: 0;
+    margin: 0;
+    font-family: Roboto;
+    box-sizing: border-box;
+}
+
 body {
+    width: 100%;
+    padding: 0 10%;
     background-color: #e6ecf0;
     margin:0;
 }
@@ -10,21 +19,119 @@ main {
 }
 
 header {
-    background-color: #494949;
-    position: relative;
+    width: 100%;
     height: 100px;
+    padding: 0 5%;
+    background-color: #fff;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    border-radius:  0 0 25px 25px;
 }
 
-#titre {
-    font-size: 50px;
-    font-family: helvetica, serif;
-    color: white;
+header nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
 }
 
-#titre a:link, #titre a:visited {
+header nav a {
     text-decoration: none;
-    color: white;
+    color: #1a1a1a;
 }
+
+header #logo {
+    font-weight: bold;
+    color: #ff6e14;
+    text-decoration: none;
+    font-size: 2em;
+}
+
+main {
+    width: 100%;
+    margin-top: 100px;
+}
+
+#anouncements-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.announcement {
+    width: 100%;
+    height: 200px;
+    border-radius: 25px;
+    background-color: #fff;
+
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    text-decoration: none;
+    color: #1A1A1A;
+}
+
+.announcement > img {
+    height: 100%;
+}
+
+.announcement > div {
+    padding: 25px;
+    flex: 1;
+    position: relative;
+}
+.announcement .title {
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+.announcement .adress {
+    color: #657786;
+    position: absolute;
+    bottom: 25px;
+}
+
+#search-section{
+    width: 100%;
+    padding: 15px;
+    border-radius: 3px;
+    background-color: #fff;
+    margin-bottom: 50px;
+}
+
+#search-section form {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+#search-section form input {
+    padding: 8px 20px;
+    font-size: 1em;
+    border: 0px solid #fff;
+}
+
+#search-section input[type=text], #search-section input[type=select]{
+    background-color: #eef1f3;
+}
+
+#search-section form input[name=city],#search-section form input[name=search] {
+    flex: 1;
+}
+
+#search-section form > input[type=submit]{
+    color: #fff;
+    border-radius: 3px;
+    font-weight: bold;
+    background-color: rgb(65, 131, 215);
+}
+
 
 #feedy-new textarea {
     width: 100%;
@@ -157,17 +264,10 @@ header {
     margin: 5px 0;
 }
 
-nav {
-    display: flex;
-    font-size: 20px;
-    justify-content: center;
-}
-
-nav a {
-    margin: 0 10px;
-}
-
 #flashes-container {
+    /*position: fixed;*/
+    /*right: 20px;*/
+    /*bottom: 20px;*/
     display: flex;
     flex-direction: column;
     margin: auto;

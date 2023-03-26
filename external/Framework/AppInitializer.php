@@ -70,9 +70,7 @@ class AppInitializer
         $containerBuilder->register('repository_manager', $configClass::repositoryManager["manager"])
             ->setArguments([
                 $configClass::repositoryManager["dataSourceParameters"],
-            ])
-            ->addMethodCall('registerRepositories', [$configClass::repositories])
-        ;
+            ]);
 
         //Twig
 

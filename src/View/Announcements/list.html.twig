@@ -1,0 +1,43 @@
+{% extends "base.html.twig" %}
+
+{% block page_title %}Annonces{% endblock %}
+
+{% block page_content %}
+    <main>
+        <div id="search-section">
+            <form>
+                    <select name="category">
+                        <option value="" selected>Catégories</option>
+                        {% for category in categories %}
+                            <option value="{{ category.id }}">{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+
+                <input type="text" placeholder="Que recherchez-vous ?" name="search"/>
+
+                <input type="text" placeholder="Ville ?" name="city"/>
+
+                <input type="submit" value="Rechercher"/>
+
+            </form>
+        </div>
+        <h2>Toutes les annonces</h2>
+        <div id="anouncements-list">
+            {% for announcement in announcements %}
+                <a class="announcement" href="#">
+                    <img src="{{ announcement.picture }}" alt=""/>
+                    <div>
+                        <p class="title">{{ announcement.name }}</p>
+                        <p class="price">Price €</p>
+                        <div class="adress">
+                            <p>{{ announcement.adress }}</p>
+                            <p>{{ announcement.city }} {{ announcement.postalcode }}</p>
+                        </div>
+                    </div>
+                </a>
+            {% else %}
+                <p>Aucune annonce n'a été posté</p>
+            {% endfor %}
+        </div>
+    </main>
+{% endblock %}
