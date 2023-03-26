@@ -3,7 +3,9 @@
 namespace TheFeed\Application;
 
 use Framework\Application\Controller;
+use http\Env\Response;
 use Symfony\Component\HttpFoundation\Request;
+use TheFeed\Business\Entity\User;
 use TheFeed\Business\Exception\ServiceException;
 
 class PublicationController extends Controller
@@ -26,5 +28,11 @@ class PublicationController extends Controller
                 $this->addFlash('error', $e->getMessage());
             }
             return $this->redirectToRoute('feed');
+    }
+
+    public function test() {
+        $userService = $this->container->get('utilisateur_service');
+        var_dump($userService->test());
+        return new \Symfony\Component\HttpFoundation\Response("teest");
     }
 }

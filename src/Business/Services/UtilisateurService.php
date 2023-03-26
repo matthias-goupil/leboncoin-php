@@ -7,6 +7,7 @@ use Framework\Services\UserSessionManager;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Session\Session;
+use TheFeed\Business\Entity\User;
 use TheFeed\Business\Entity\Utilisateur;
 use TheFeed\Business\Exception\ServiceException;
 
@@ -22,14 +23,14 @@ class UtilisateurService
 
     public function __construct($repositoryManager, $sessionManager, $secretSeed, $profilePicturesRoot)
     {
-        $this->repository = $repositoryManager->getRepository(Utilisateur::class);
+        $this->repository = $repositoryManager->getRepository(User::class);
         $this->sessionManager = $sessionManager;
         $this->secretSeed = $secretSeed;
         $this->profilePicturesRoot = $profilePicturesRoot;
     }
 
     public function getUtilisateur($idUtilisateur, $allowNull = true) {
-        $utilisateur =  $this->repository->get($idUtilisateur);
+        $utilisateur =  $this->repository->find($idUtilisateur);
         if(!$allowNull && $utilisateur == null) {
             throw new ServiceException("Utilisateur inexistant!");
         }
@@ -114,5 +115,9 @@ class UtilisateurService
 
     public function estConnecte() {
         return $this->sessionManager->has('id');
+    }
+
+    public function test() {
+        return $this->repository->findAll();
     }
 }

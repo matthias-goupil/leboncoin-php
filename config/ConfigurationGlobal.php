@@ -4,15 +4,26 @@ namespace Config;
 
 use Framework\Services\ServerSessionManager;
 use Symfony\Component\DependencyInjection\Reference;
+use TheFeed\Application\AnnouncementController;
 use TheFeed\Application\API\PublicationControllerAPI;
 use TheFeed\Application\API\UtilisateurControllerAPI;
+use TheFeed\Application\CategoryController;
 use TheFeed\Application\PublicationController;
+use TheFeed\Application\UserController;
 use TheFeed\Application\UtilisateurController;
+use TheFeed\Business\Entity\Announcement;
+use TheFeed\Business\Entity\Category;
 use TheFeed\Business\Entity\Publication;
+use TheFeed\Business\Entity\User;
 use TheFeed\Business\Entity\Utilisateur;
+use TheFeed\Business\Services\AnnouncementService;
 use TheFeed\Business\Services\PublicationService;
+use TheFeed\Business\Services\UserService;
 use TheFeed\Business\Services\UtilisateurService;
 use TheFeed\Listener\AppListener;
+use TheFeed\Storage\SQL\doctrine\AnnouncementRepository;
+use TheFeed\Storage\SQL\doctrine\CategoryRepository;
+use TheFeed\Storage\SQL\doctrine\UserRepository;
 use TheFeed\Storage\SQL\PublicationRepositorySQL;
 use TheFeed\Storage\SQL\UtilisateurRepositorySQL;
 
@@ -32,6 +43,9 @@ class ConfigurationGlobal
     const repositories = [
         Publication::class => PublicationRepositorySQL::class,
         Utilisateur::class => UtilisateurRepositorySQL::class,
+        User::class => UserRepository::class,
+        Announcement::class => AnnouncementRepository::class,
+        Category::class => CategoryRepository::class
     ];
 
     const userSessionManager = [
@@ -42,6 +56,9 @@ class ConfigurationGlobal
     ];
 
     const controllers = [
+        "user_controller" => UserController::class,
+        "category_controller" => CategoryController::class,
+        "announcement_controller" => AnnouncementController::class,
         "publication_controller" => PublicationController::class,
         "utilisateur_controller" => UtilisateurController::class,
         "publication_controller_api" => PublicationControllerAPI::class,
@@ -49,11 +66,78 @@ class ConfigurationGlobal
     ];
 
     const routes = [
-        "feed" => [
+        "profil_user" => [
+            "path" => "/user/{userId}",
+            "methods" => ["GET"],
+            "parameters" => [
+                "_controller" => "user_controller::profil",
+//                "_logged" => true,
+            ]
+        ],
+        "liked_announcements" => [
+            "path" => "/user/{userId}/liked",
+            "methods" => ["GET"],
+            "parameters" => [
+                "_controller" => "user_controller::annoucementsLiked",
+//                "_logged" => true,
+            ]
+        ],
+        "logout_user" => [
+            "path" => "/logout",
+            "methods" => ["GET"],
+            "parameters" => [
+                "_controller" => "user_controller::logout",
+                "_logged" => true,
+            ]
+        ],
+        "announcements_list" => [
             "path" => "/",
             "methods" => ["GET"],
             "parameters" => [
-                "_controller" => "publication_controller::feed",
+                "_controller" => "announcement_controller::list",
+            ]
+        ],
+        "register_user" => [
+            "path" => "/register",
+            "methods" => ["GET"],
+            "parameters" => [
+                "_controller" => "user_controller::register",
+            ]
+        ],
+
+        "submit_register_user" => [
+            "path" => "/register",
+            "methods" => ["POST"],
+            "parameters" => [
+                "_controller" => "user_controller::submitRegister",
+            ]
+        ],
+        "login_user" => [
+            "path" => "/login",
+            "methods" => ["GET"],
+            "parameters" => [
+                "_controller" => "user_controller::login",
+            ]
+        ],
+        "submit_login_user" => [
+            "path" => "/login",
+            "methods" => ["POST"],
+            "parameters" => [
+                "_controller" => "user_controller::submitLogin",
+            ]
+        ],
+//        "feed" => [
+//            "path" => "/",
+//            "methods" => ["GET"],
+//            "parameters" => [
+//                "_controller" => "publication_controller::feed",
+//            ]
+//        ],
+        "test" => [
+            "path" => "/test",
+            "methods" => ["GET"],
+            "parameters" => [
+                "_controller" => "publication_controller::test",
             ]
         ],
         "submit_feedy" => [
@@ -146,6 +230,22 @@ class ConfigurationGlobal
 
     public static function services($container): void
     {
+        $container->register('user_service', UserService::class)
+            ->setArguments([
+                new Reference('repository_manager'),
+                new Reference('session_manager'),
+                "%secret_seed%",
+                "%profile_pictures_storage%"
+            ])
+        ;
+
+        $container->register('announcement_service', AnnouncementService::class)
+            ->setArguments([
+                new Reference('repository_manager'),
+                new Reference('user_service'),
+            ])
+        ;
+
         $container->register('publication_service', PublicationService::class)
             ->setArguments([
                 new Reference('repository_manager'),
