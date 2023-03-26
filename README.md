@@ -44,3 +44,6 @@ Lorsque qu'un utilisateur se sera inscrit, un email lui sera envoyé afin qu'il 
 Ce projet est réalisé par 
  + Matthias GOUPIL *(https://github.com/matthias-goupil)*
  + Mehdi SAHARI *(https://github.com/Mehdi-Shr)*
+
+## Trello : 
+Lien du Trello : *https://trello.com/b/XbkCKmW0/php-le-mauvais-coin*

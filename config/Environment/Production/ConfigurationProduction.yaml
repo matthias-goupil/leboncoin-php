@@ -1,0 +1,11 @@
+# config/Environment/Production/ConfigurationProduction.yaml
+
+debug: false
+environment: production
+repositoryManager:
+  manager: Framework\Storage\SQL\RepositoryManagerMySQL
+  dataSourceParameters:
+    hostname: webinfo.iutmontp.univ-montp2.fr
+    database: goupilm
+    login: goupilm
+    password: '071043647CG'

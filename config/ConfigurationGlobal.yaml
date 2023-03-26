@@ -1,0 +1,125 @@
+debug: false
+
+appRoot: "../src"
+
+parameters:
+  profile_pictures_storage: "../web/assets/img/utilisateurs"
+  secret_seed: "qh7878qfsfsr_ttezo!"
+
+views: "View"
+
+repositories:
+  TheFeed\Business\Entity\Publication: TheFeed\Storage\SQL\PublicationRepositorySQL
+  TheFeed\Business\Entity\Utilisateur: TheFeed\Storage\SQL\UtilisateurRepositorySQL
+
+userSessionManager:
+  manager: Framework\Services\ServerSessionManager
+  parameters:
+    environment: "%environment%"
+
+controllers:
+  publication_controller: TheFeed\Application\PublicationController
+  utilisateur_controller: TheFeed\Application\UtilisateurController
+  publication_controller_api: TheFeed\Application\API\PublicationControllerAPI
+  utilisateur_controller_api: TheFeed\Application\API\UtilisateurControllerAPI
+
+routes:
+  feed:
+    path: "/"
+    methods:
+      - "GET"
+    parameters:
+      _controller: "publication_controller::feed"
+  submit_feedy:
+    path: "/feedy"
+    methods:
+      - "POST"
+    parameters:
+      _controller: "publication_controller::submitFeedy"
+      _logged: true
+  connexion:
+    path: "/connexion"
+    methods:
+      - "GET"
+    parameters:
+      _controller: "utilisateur_controller::getConnexion"
+      _force_not_logged: true
+  deconnexion:
+    path: "/deconnexion"
+    methods:
+      - "GET"
+    parameters:
+      _controller: "utilisateur_controller::deconnexion"
+      _logged: true
+  inscription:
+    path: "/inscription"
+    methods:
+      - "GET"
+    parameters:
+      _controller: "utilisateur_controller::getInscription"
+      _force_not_logged: true
+  page_perso:
+    path: "/utilisateurs/page/{idUser}"
+    methods:
+      - "GET"
+    parameters:
+      _controller: "utilisateur_controller::pagePerso"
+      idUser: null
+  submit_inscription:
+    path: "/inscription"
+    methods:
+      - "POST"
+    parameters:
+      _controller: "utilisateur_controller::submitInscription"
+      _force_not_logged: true
+  submit_connexion:
+    path: "/connexion"
+    methods:
+      - "POST"
+    parameters:
+      _controller: "utilisateur_controller::submitConnexion"
+      _force_not_logged: true
+  submit_feedy_api:
+    path: "/api/feedy"
+    methods:
+      - "POST"
+    parameters:
+      _controller: "publication_controller_api::submitFeedy"
+      _logged: true
+  remove_feedy_api:
+    path: "api/feedy/{idPublication}"
+    methods:
+      - "DELETE"
+    parameters:
+      _controller: "publication_controller_api::removeFeedy"
+      idPublication: null
+      _logged: true
+  remove_utilisateur_api:
+    path: "api/utilisateur/{idUser}"
+    methods:
+      - "DELETE"
+    parameters:
+      _controller: "utilisateur_controller_api::removeUtilisateur"
+      idUser: null
+      _logged: true
+
+listeners:
+  - "app_listener"
+
+services:
+  publication_service:
+    class: TheFeed\Business\Services\PublicationService
+    arguments:
+      - "@repository_manager"
+      - "@utilisateur_service"
+  utilisateur_service:
+    class: TheFeed\Business\Services\UtilisateurService
+    arguments:
+      - "@repository_manager"
+      - "@session_manager"
+      - "%secret_seed%"
+      - "%profile_pictures_storage%"
+  mail_service:
+    class: TheFeed\Business\Services\MailService
+    arguments:
+      - "@PHP
