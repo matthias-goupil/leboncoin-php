@@ -2,13 +2,8 @@
 
 
 ## implémentation à faire afin d'améliorer le framework :
-  + Changement des fichiers de config php en YAML
-  + Enregistrement des services sans utiliser une fonction statique
-  + Des nouveaux repository manager pour gérer d’autres sources de données? (XML, CSV, fichier texte…)
   + Ajout d’un service pour envoyer des mails
   + Ajout d’un service pour générer des documents PDF
-  + Gestions de divers événements
-  + Laisser le choix au développeur entre l’utilisation de templates twig ou bien des fichiers php basiques, pour les vues
   + Ajout d’un ORM (object relational mapper) pour gérer toute la partie repository SQL? (par exemple, doctrine)
  
 
