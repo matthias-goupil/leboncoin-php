@@ -1,12 +1,4 @@
 <?php
-/**
- * EHS
- *
- * @category  EHS
- * @package   TheFeed\Business\Services
- * @author    Mehdi Sahari <mesah@smile.fr>
- * @copyright 2023 Smile
- */
 namespace TheFeed\Business\Services;
 
 use TCPDF;

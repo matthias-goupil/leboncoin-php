@@ -3,6 +3,7 @@
 namespace TheFeed\Application;
 
 use Framework\Application\Controller;
+use TheFeed\Business\Services\MailService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use TheFeed\Business\Exception\ServiceException;
@@ -22,13 +23,22 @@ class UserController extends Controller
         $adresseMail = $request->get("email");
 //        $profilePictureFile = $request->files->get("profilePicture");
         $userService = $this->container->get('user_service');
+        $mailService = $this->container->get('mail_service');
+
         try {
             $userService->createUser($adresseMail,$firstname, $lastname, $passwordClair, $tel);
+
+            // Envoi d'un email de confirmation
+            $body = "Bonjour $firstname $lastname,<br>Votre inscription a bien été prise en compte.<br>Cordialement,<br>L'équipe LeMauvaisCoin";
+            $to = $adresseMail;
+            $subject = "Confirmation d'inscription";
+            $attachments = [];
+            $mailService->sendMail($to, $subject, $body, $attachments);
+
             $this->addFlash("success","Inscription réeussie!");
             return $this->redirectToRoute('feed');
-        }
-        catch (ServiceException $e) {
-            $this->addFlash("error",$e->getMessage());
+        } catch (ServiceException $e) {
+            $this->addFlash("error", $e->getMessage());
             return $this->render("Users/register.html.twig", ["firstname" => $firstname, "email" => $adresseMail, "lastname" => $lastname, "tel" => $tel]);
         }
     }
