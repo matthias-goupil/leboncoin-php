@@ -272,9 +272,8 @@ class ConfigurationGlobal
         ;
         $container->register('mail_service', MailService::class)
             ->setArguments([
-                               new PHPMailer(),
-                               "%from_email%",
-                               "%from_name%"
+                               "Steffan@lemauvaiscoin.com",
+                               "Steffan LeMauvaisCoin"
            ])
         ;
         $container->register('pdf_generator', PDFService::class);

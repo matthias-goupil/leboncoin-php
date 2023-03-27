@@ -1,63 +1,43 @@
 <?php
-/**
- * EHS
- *
- * @category  EHS
- * @package   TheFeed\Business\Services
- * @author    Mehdi Sahari <mesah@smile.fr>
- * @copyright 2023 Smile
- */
 namespace TheFeed\Business\Services;
-use PHPMailer\PHPMailer\PHPMailer;
 
 class MailService
 {
-    private $mailer;
     private $fromEmail;
     private $fromName;
 
-    public function __construct($mailer, $fromEmail, $fromName)
+    public function __construct($fromEmail, $fromName)
     {
-        $this->mailer = $mailer;
         $this->fromEmail = $fromEmail;
         $this->fromName = $fromName;
     }
 
     public function sendMail($to, $subject, $body, $attachments = [])
     {
-        try {
-            // Create a new PHPMailer instance
-            $mail = new PHPMailer(true);
+        $headers = "From: {$this->fromName} <{$this->fromEmail}>\r\n";
+        $headers .= "MIME-Version: 1.0\r\n";
+        $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
 
-            // Set mailer to use SMTP
-            $mail->isSMTP();
-            $mail->SMTPAuth = true;
-
-            // Set SMTP settings
-            $mail->Host = 'smtp.example.com'; // Your SMTP server
-            $mail->SMTPSecure = 'tls'; // Encryption method
-            $mail->Port = 587; // Port number
-            $mail->Username = 'your_username@example.com'; // SMTP username
-            $mail->Password = 'your_password'; // SMTP password
-
-            // Set sender and recipient
-            $mail->setFrom($this->fromEmail, $this->fromName);
-            $mail->addAddress($to);
-
-            // Set email subject and body
-            $mail->Subject = $subject;
-            $mail->Body = $body;
-
-            // Add attachments
-            foreach ($attachments as $attachment) {
-                $mail->addAttachment($attachment);
+        foreach ($attachments as $attachment) {
+            if (file_exists($attachment)) {
+                $attachmentContent = file_get_contents($attachment);
+                $attachmentContent = chunk_split(base64_encode($attachmentContent));
+                $attachmentName = basename($attachment);
+                $headers .= "Content-Type: application/octet-stream; name=\"{$attachmentName}\"\r\n";
+                $headers .= "Content-Transfer-Encoding: base64\r\n";
+                $headers .= "Content-Disposition: attachment; filename=\"{$attachmentName}\"\r\n\r\n";
+                $headers .= "{$attachmentContent}\r\n\r\n";
             }
-
-            // Send the email
-            $mail->send();
-
-        } catch (Exception $e) {
-            throw new ServiceException("Failed to send email: " . $mail->ErrorInfo);
         }
+
+        $success = mail($to, $subject, $body, $headers);
+
+        if (!$success) {
+            error_log("Failed to send email to {$to}");
+            return false;
+        }
+
+        return true;
     }
 }
+

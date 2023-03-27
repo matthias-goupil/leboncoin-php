@@ -65,12 +65,10 @@ class UserService
         if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw new ServiceException("L'adresse mail est incorrecte!");
         }
-        echo" oiu";
 
         $user = $this->repository->findOneBy([
             "email" => $email
         ]);
-        echo" oiu";
 
         if($user != null) {
             throw new ServiceException("Ce login est déjà pris!");
