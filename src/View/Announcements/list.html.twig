@@ -24,7 +24,7 @@
         <h2>Toutes les annonces</h2>
         <div id="anouncements-list">
             {% for announcement in announcements %}
-                <a class="announcement" href="#">
+                <a class="announcement" href="{{ route("show_announcement", {"idAnnouncement": announcement.id}) }}">
                     <img src="{{ announcement.picture }}" alt=""/>
                     <div>
                         <p class="title">{{ announcement.name }}</p>

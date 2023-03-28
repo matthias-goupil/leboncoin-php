@@ -34,14 +34,15 @@ class Announcement
     #[ORM\Column]
     private ?int $postalcode = null;
 
-    #[ORM\Column(length: 30)]
-    private ?string $state = null;
-
-    #[ORM\ManyToMany(targetEntity: Category::class, mappedBy: 'announcements')]
-    private Collection $categories;
+    #[ORM\Column]
+    private ?int $price = null;
 
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'likedAnnouncements')]
     private Collection $usersliked;
+
+    #[ORM\ManyToOne(inversedBy: 'announcements')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Category $category = null;
 
     #[ORM\ManyToOne(inversedBy: 'announcements')]
     #[ORM\JoinColumn(nullable: false)]
@@ -49,7 +50,6 @@ class Announcement
 
     public function __construct()
     {
-        $this->categories = new ArrayCollection();
         $this->usersliked = new ArrayCollection();
     }
 
@@ -206,5 +206,60 @@ class Announcement
         $this->author = $author;
         return $this;
     }
+
+    /**
+     * @return Category|null
+     */
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param Category|null $category
+     */
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getPrice(): ?int
+    {
+        return $this->price;
+    }
+
+    /**
+     * @param int|null $price
+     */
+    public function setPrice(?int $price): self
+    {
+        $this->price = $price;
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection|Collection
+     */
+    public function getUsersliked(): ArrayCollection|Collection
+    {
+        return $this->usersliked;
+    }
+
+    public function addUserLiked(User $user): self {
+        if (!$this->usersliked->contains($user)) {
+            $this->usersliked->add($user);
+        }
+        return $this;
+    }
+
+    public function removeUserLiked(User $user): self {
+        $this->usersliked->removeElement($user);
+        return $this;
+    }
+
 
 }
