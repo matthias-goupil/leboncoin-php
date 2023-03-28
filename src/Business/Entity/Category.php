@@ -19,13 +19,14 @@ class Category
     #[ORM\Column(length: 180, unique: true)]
     private ?string $name = null;
 
-    #[ORM\ManyToMany(targetEntity: Announcement::class, inversedBy: 'categories')]
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Announcement::class, orphanRemoval: true)]
     private Collection $announcements;
 
     public function __construct()
     {
         $this->announcements = new ArrayCollection();
     }
+
     /**
      * @return int|null
      */
@@ -59,4 +60,34 @@ class Category
         $this->name = $name;
         return $this;
     }
+
+    /**
+     * @return ArrayCollection|Collection
+     */
+    public function getAnnouncements(): ArrayCollection|Collection
+    {
+        return $this->announcements;
+    }
+
+    public function addAnnouncement(Announcement $announcement): self
+    {
+        if (!$this->announcements->contains($announcement)) {
+            $this->announcements->add($announcement);
+            $announcement->setCategory($this);
+        }
+        return $this;
+    }
+
+    public function removeAnnouncement(Announcement $announcement): self
+    {
+        if ($this->announcements->removeElement($announcement)) {
+            // set the owning side to null (unless already changed)
+            if ($announcement->getCategory() === $this) {
+                $announcement->setCategory(null);
+            }
+        }
+        return $this;
+    }
+
+
 }

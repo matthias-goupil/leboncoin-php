@@ -150,7 +150,6 @@ class User
     {
         if (!$this->likedAnnouncements->contains($announcement)) {
             $this->likedAnnouncements->add($announcement);
-            $announcement->addUsersliked($this);
         }
 
         return $this;
@@ -158,12 +157,7 @@ class User
 
     public function removeLikedAnnouncement(Announcement $announcement): self
     {
-        if ($this->likedAnnouncements->removeElement($announcement)) {
-            // set the owning side to null (unless already changed)
-            if ($announcement->getUsersLiked()->contains($this)) {
-                $announcement->removeUsersliked($this);
-            }
-        }
+        $this->likedAnnouncements->removeElement($announcement);
 
         return $this;
     }
@@ -176,7 +170,7 @@ class User
         return $this->announcements;
     }
 
-    public function addAnnounecemnts(Announcement $announcement): self {
+    public function addAnnouncement(Announcement $announcement): self {
         if (!$this->announcements->contains($announcement)) {
             $this->announcements->add($announcement);
             $announcement->setAuthor($this);
@@ -184,12 +178,11 @@ class User
         return $this;
     }
 
-    public function removedAnnounecemnts(Announcement $announcement): self {
+    public function removedAnnouncement(Announcement $announcement): self {
         if ($this->announcements->removeElement($announcement)) {
             $announcement->setAuthor(null);
         }
         return $this;
     }
-
 
 }

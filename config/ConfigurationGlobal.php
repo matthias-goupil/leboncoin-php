@@ -69,6 +69,14 @@ class ConfigurationGlobal
     ];
 
     const routes = [
+        "show_announcement" => [
+            "path" => "/announcement/{idAnnouncement}",
+            "methods" => ["GET"],
+            "parameters" => [
+                "_controller" => "announcement_controller::show",
+//                "_logged" => true,
+            ]
+        ],
         "profil_user" => [
             "path" => "/user/{userId}",
             "methods" => ["GET"],
