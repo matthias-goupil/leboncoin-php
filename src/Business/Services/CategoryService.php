@@ -2,8 +2,10 @@
 
 namespace TheFeed\Business\Services;
 
-use TheFeed\Business\Entity\Category;
 use Framework\Storage\Doctrine\RepositoryManagerMySQL;
+use TheFeed\Business\Entity\Category;
+use TheFeed\Business\Exception\ServiceException;
+
 
 class CategoryService
 {
@@ -24,4 +26,17 @@ class CategoryService
         return $this->repository->findAll();
     }
 
+    public function getCategoryByName($name) {
+        return $this->repository->findOneBy(["name" => $name]);
+    }
+
+    public function createCategoryIfDontExists($name): Category{
+        $category = $this->getCategoryByName($name);
+        if($category) return $category;
+        $category = (new Category())
+            ->setName($name);
+        $this->repositoryManager->persist($category);
+        $this->repositoryManager->flush();
+        return $category;
+    }
 }

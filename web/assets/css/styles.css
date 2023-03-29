@@ -220,6 +220,10 @@ main {
     background-color: orangered;
 }
 
+#createAnnouncement input[name="createCategory"] {
+    visibility: hidden;
+}
+
 #error-block-container {
     margin-top: 50px;
 }

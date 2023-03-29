@@ -8,7 +8,7 @@
         <div id="anouncements-list">
             {% for announcement in liked %}
                 <a class="announcement" href="#">
-                    <img src="{{ announcement.picture }}" alt=""/>
+                    <img src="{{ asset(announcement.picture) }}" alt=""/>
                     <div>
                         <p class="title">{{ announcement.name }}</p>
                         <p class="price">Price €</p>

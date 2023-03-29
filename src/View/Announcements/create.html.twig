@@ -1,0 +1,60 @@
+{% extends "base.html.twig" %}
+
+{% block page_title %}Annonce{% endblock %}
+
+{% block page_content %}
+    <main id="createAnnouncement">
+        <h1>Ecrivez une annonce</h1>
+        <form action="{{ route("submit_create_announcement") }}" id="form-access" class="center" method="post"
+              enctype="multipart/form-data">
+            <div class="access-container">
+                <label for="name">Nom de l'annonce</label>
+                <p class="help-input-form">Entre 3 et 180 caractères</p>
+                <input id="name" type="text" name="name" value="{{ name }}" minlength="4" maxlength="180" required/>
+            </div>
+
+            <div class="access-container">
+                <label for="description">Description de l'annonce</label>
+                <p class="help-input-form">Entre 3 et 2083 caractères</p>
+                <textarea id="description" name="description" minlength="4" maxlength="2083"
+                          required>{{ description }}</textarea>
+            </div>
+
+            <div class="access-container">
+                <label for="price">Prix de l'annonce</label>
+                <input id="price" type="number" name="price" required value="{{ description }}">
+            </div>
+
+
+            <div class="access-container">
+                <label for="category">Catégorie</label>
+                <input id="category" type="text" name="category" required/>
+            </div>
+
+            <div class="access-container">
+                <label for="password">Adresse</label>
+                <p class="help-input-form">Entre 8 et 20 caractères, au moins une minuscule, une majuscule et un
+                    nombre</p>
+                <input id="adress" type="text" name="adress" required/>
+            </div>
+
+            <div class="access-container">
+                <label for="city">Ville</label>
+                <p class="help-input-form">Entre 8 et 20 caractères, au moins une minuscule, une majuscule et un
+                    nombre</p>
+                <input id="city" type="text" name="city" required/>
+            </div>
+            <div class="access-container">
+                <label for="postalcode">Code postal</label>
+                <p class="help-input-form">Entre 8 et 20 caractères, au moins une minuscule, une majuscule et un
+                    nombre</p>
+                <input id="postalCode" type="number" name="postalCode" required/>
+            </div>
+            <div class="access-container">
+                <label for="picture">Photo de l'annonce</label>
+                <input required type="file" id="picture" name="picture" accept="image/png, image/jpeg">
+            </div>
+            <input id="access-submit" type="submit" value="Poster l'annonce">
+        </form>
+    </main>
+{% endblock %}

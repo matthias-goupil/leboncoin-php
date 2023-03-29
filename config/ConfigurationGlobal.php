@@ -3,10 +3,10 @@
 namespace Config;
 
 use PHPMailer\PHPMailer\PHPMailer;
+use TheFeed\Business\Services\CategoryService;
 use TheFeed\Business\Services\PDFService;
 use TheFeed\Business\Services\MailService;
 use Framework\Services\ServerSessionManager;
-use TheFeed\Business\Services\CategoryService;
 use Symfony\Component\DependencyInjection\Reference;
 use TheFeed\Application\AnnouncementController;
 use TheFeed\Application\API\PublicationControllerAPI;
@@ -38,7 +38,7 @@ class ConfigurationGlobal
     const appRoot = __DIR__ . '/../src';
 
     const parameters = [
-        "profile_pictures_storage" => __DIR__ . '/../web/assets/img/utilisateurs',
+        "profile_pictures_storage" => __DIR__ . '/../web/assets/img/annonces',
         "secret_seed" => "qh7878qfsfsr_ttezo!"
     ];
 
@@ -70,6 +70,58 @@ class ConfigurationGlobal
     ];
 
     const routes = [
+        "add_liked_announcements" => [
+            "path" => "/announcement/{idAnnouncement}/addLike",
+            "methods" => ["GET"],
+            "parameters" => [
+                "_controller" => "announcement_controller::addToFavorite",
+                "_logged" => true,
+            ]
+        ],
+        "delete_announcement" => [
+            "path" => "/announcement/{idAnnouncement}/delete",
+            "methods" => ["GET"],
+            "parameters" => [
+                "_controller" => "announcement_controller::delete",
+                "_logged" => true,
+            ]
+        ],
+
+        "create_announcement" => [
+            "path" => "/announcement/create",
+            "methods" => ["GET"],
+            "parameters" => [
+                "_controller" => "announcement_controller::create",
+                "_logged" => true,
+            ]
+        ],
+
+        "submit_create_announcement" => [
+            "path" => "/announcement/create",
+            "methods" => ["POST"],
+            "parameters" => [
+                "_controller" => "announcement_controller::submitCreate",
+                "_logged" => true,
+            ]
+        ],
+
+        "update_announcement" => [
+            "path" => "/announcement/{idAnnouncement}/update",
+            "methods" => ["GET"],
+            "parameters" => [
+                "_controller" => "announcement_controller::update",
+                "_logged" => true,
+            ]
+        ],
+
+        "submit_update_announcement" => [
+            "path" => "/announcement/{idAnnouncement}/update",
+            "methods" => ["POST"],
+            "parameters" => [
+                "_controller" => "announcement_controller::submitUpdate",
+                "_logged" => true,
+            ]
+        ],
         "show_announcement" => [
             "path" => "/announcement/{idAnnouncement}",
             "methods" => ["GET"],
@@ -78,16 +130,10 @@ class ConfigurationGlobal
 //                "_logged" => true,
             ]
         ],
-        "profil_user" => [
-            "path" => "/user/{userId}",
-            "methods" => ["GET"],
-            "parameters" => [
-                "_controller" => "user_controller::profil",
-//                "_logged" => true,
-            ]
-        ],
+
+
         "liked_announcements" => [
-            "path" => "/user/{userId}/liked",
+            "path" => "/user/liked",
             "methods" => ["GET"],
             "parameters" => [
                 "_controller" => "user_controller::annoucementsLiked",
@@ -124,6 +170,21 @@ class ConfigurationGlobal
                 "_controller" => "user_controller::submitRegister",
             ]
         ],
+        "update_user" => [
+            "path" => "/user/update",
+            "methods" => ["GET"],
+            "parameters" => [
+                "_controller" => "user_controller::update",
+            ]
+        ],
+
+        "submit_update_user" => [
+            "path" => "/user/update",
+            "methods" => ["POST"],
+            "parameters" => [
+                "_controller" => "user_controller::submitUpdate",
+            ]
+        ],
         "login_user" => [
             "path" => "/login",
             "methods" => ["GET"],
@@ -138,121 +199,115 @@ class ConfigurationGlobal
                 "_controller" => "user_controller::submitLogin",
             ]
         ],
-//        "feed" => [
-//            "path" => "/",
+        "profil_user" => [
+            "path" => "/user/profil",
+            "methods" => ["GET"],
+            "parameters" => [
+                "_controller" => "user_controller::profil",
+                "_logged" => true,
+            ]
+        ],
+//        "test" => [
+//            "path" => "/test",
 //            "methods" => ["GET"],
 //            "parameters" => [
-//                "_controller" => "publication_controller::feed",
+//                "_controller" => "publication_controller::test",
 //            ]
 //        ],
-        "test" => [
-            "path" => "/test",
-            "methods" => ["GET"],
-            "parameters" => [
-                "_controller" => "publication_controller::test",
-            ]
-        ],
-        "announcement_pdf" => [
-            "path" => "/announcement/{idAnnouncement}/pdf",
-            "methods" => ["GET"],
-            "parameters" => [
-                "_controller" => "announcement_controller::pdf",
-            ]
-        ],
-        "submit_feedy" => [
-            "path" => "/feedy",
-            "methods" => ["POST"],
-            "parameters" => [
-                "_controller" => "publication_controller::submitFeedy",
-                "_logged" => true,
-            ]
-        ],
-        "connexion" => [
-            "path" => "/connexion",
-            "methods" => ["GET"],
-            "parameters" => [
-                "_controller" => "utilisateur_controller::getConnexion",
-                "_force_not_logged" => true,
-            ]
-        ],
-        "deconnexion" => [
-            "path" => "/deconnexion",
-            "methods" => ["GET"],
-            "parameters" => [
-                "_controller" => "utilisateur_controller::deconnexion",
-                "_logged" => true,
-            ]
-        ],
-        "inscription" => [
-            "path" => "/inscription",
-            "methods" => ["GET"],
-            "parameters" => [
-                "_controller" => "utilisateur_controller::getInscription",
-                "_force_not_logged" => true,
-            ]
-        ],
-        "page_perso" => [
-            "path" => "/utilisateurs/page/{idUser}",
-            "methods" => ["GET"],
-            "parameters" => [
-                "_controller" => "utilisateur_controller::pagePerso",
-                "idUser" => null,
-            ]
-        ],
-        "submit_inscription" => [
-            "path" => "/inscription",
-            "methods" => ["POST"],
-            "parameters" => [
-                "_controller" => "utilisateur_controller::submitInscription",
-                "_force_not_logged" => true,
-            ]
-        ],
-        "submit_connexion" => [
-            "path" => "/connexion",
-            "methods" => ["POST"],
-            "parameters" => [
-                "_controller" => "utilisateur_controller::submitConnexion",
-                "_force_not_logged" => true,
-            ]
-        ],
-        "submit_feedy_api" => [
-            "path" => "/api/feedy",
-            "methods" => ["POST"],
-            "parameters" => [
-                "_controller" => "publication_controller_api::submitFeedy",
-                "_logged" => true,
-            ]
-        ],
-        "remove_feedy_api" => [
-            "path" => "api/feedy/{idPublication}",
-            "methods" => ["DELETE"],
-            "parameters" => [
-                "_controller" => "publication_controller_api::removeFeedy",
-                "idPublication" => null,
-                "_logged" => true,
-            ]
-        ],
-        "remove_utilisateur_api" => [
-            "path" => "api/utilisateur/{idUser}",
-            "methods" => ["DELETE"],
-            "parameters" => [
-                "_controller" => "utilisateur_controller_api::removeUtilisateur",
-                "idUser" => null,
-                "_logged" => true,
-            ]
-        ],
-        "search_announcements" => [
-            "path" => "/search",
-            "methods" => ["GET"],
-            "parameters" => [
-                "_controller" => "announcement_controller::search",
-                //                "_logged" => true,
-            ]
-        ],
+//        "feedPDF" => [
+//            "path" => "/pdf",
+//            "methods" => ["GET"],
+//            "parameters" => [
+//                "_controller" => "publication_controller::feedPDF",
+//            ]
+//        ],
+//        "submit_feedy" => [
+//            "path" => "/feedy",
+//            "methods" => ["POST"],
+//            "parameters" => [
+//                "_controller" => "publication_controller::submitFeedy",
+//                "_logged" => true,
+//            ]
+//        ],
+
     ];
 
+//"connexion" => [
+//"path" => "/connexion",
+//"methods" => ["GET"],
+//"parameters" => [
+//"_controller" => "utilisateur_controller::getConnexion",
+//"_force_not_logged" => true,
+//]
+//],
+//"deconnexion" => [
+//"path" => "/deconnexion",
+//"methods" => ["GET"],
+//"parameters" => [
+//"_controller" => "utilisateur_controller::deconnexion",
+//"_logged" => true,
+//]
+//],
+//"inscription" => [
+//"path" => "/inscription",
+//"methods" => ["GET"],
+//"parameters" => [
+//"_controller" => "utilisateur_controller::getInscription",
+//"_force_not_logged" => true,
+//]
+//],
+//"page_perso" => [
+//"path" => "/annonces/page/{idUser}",
+//"methods" => ["GET"],
+//"parameters" => [
+//"_controller" => "utilisateur_controller::pagePerso",
+//"idUser" => null,
+//]
+//],
+//"submit_inscription" => [
+//"path" => "/inscription",
+//"methods" => ["POST"],
+//"parameters" => [
+//"_controller" => "utilisateur_controller::submitInscription",
+//"_force_not_logged" => true,
+//]
+//],
+//"submit_connexion" => [
+//"path" => "/connexion",
+//"methods" => ["POST"],
+//"parameters" => [
+//"_controller" => "utilisateur_controller::submitConnexion",
+//"_force_not_logged" => true,
+//]
+//],
+//"submit_feedy_api" => [
+//"path" => "/api/feedy",
+//"methods" => ["POST"],
+//"parameters" => [
+//"_controller" => "publication_controller_api::submitFeedy",
+//"_logged" => true,
+//]
+//],
+//"remove_feedy_api" => [
+//"path" => "api/feedy/{idPublication}",
+//"methods" => ["DELETE"],
+//"parameters" => [
+//"_controller" => "publication_controller_api::removeFeedy",
+//"idPublication" => null,
+//"_logged" => true,
+//]
+//],
+//"remove_utilisateur_api" => [
+//"path" => "api/utilisateur/{idUser}",
+//"methods" => ["DELETE"],
+//"parameters" => [
+//"_controller" => "utilisateur_controller_api::removeUtilisateur",
+//"idUser" => null,
+//"_logged" => true,
+//]
+//],
     const listeners = [
-      "app_listener"
+        "app_listener"
     ];
 
     public static function services($container): void
@@ -263,36 +318,38 @@ class ConfigurationGlobal
                 new Reference('session_manager'),
                 "%secret_seed%",
                 "%profile_pictures_storage%"
-            ])
-        ;
+            ]);
 
         $container->register('announcement_service', AnnouncementService::class)
             ->setArguments([
                 new Reference('repository_manager'),
                 new Reference('user_service'),
-            ])
-        ;
+                "%profile_pictures_storage%"
+            ]);
+
+        $container->register('category_service', CategoryService::class)
+            ->setArguments([
+                new Reference('repository_manager'),
+                new Reference('user_service'),
+            ]);
 
         $container->register('publication_service', PublicationService::class)
             ->setArguments([
                 new Reference('repository_manager'),
                 new Reference('utilisateur_service'),
-            ])
-        ;
+            ]);
         $container->register('utilisateur_service', UtilisateurService::class)
             ->setArguments([
                 new Reference('repository_manager'),
                 new Reference('session_manager'),
                 "%secret_seed%",
                 "%profile_pictures_storage%"
-            ])
-        ;
+            ]);
         $container->register('mail_service', MailService::class)
             ->setArguments([
-                               "Steffan@lemauvaiscoin.com",
-                               "Steffan LeMauvaisCoin"
-           ])
-        ;
+                "Steffan@lemauvaiscoin.com",
+                "Steffan LeMauvaisCoin"
+            ]);
         $container->register('pdf_generator', PDFService::class);
         $container->register('app_listener', AppListener::class)
             ->setArguments([
@@ -301,8 +358,8 @@ class ConfigurationGlobal
                 new Reference('url_generator')]);
         $container->register('category_service', CategoryService::class)
             ->setArguments([
-                               new Reference('repository_manager'),
-                               new Reference('user_service'),
-                           ]);
+                new Reference('repository_manager'),
+                new Reference('user_service'),
+            ]);
     }
 }

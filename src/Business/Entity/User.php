@@ -49,6 +49,14 @@ class User
         $this->likedAnnouncements = new ArrayCollection();
     }
 
+    /**
+     * @param int|null $id
+     */
+    public function setId(?int $id): self
+    {
+        $this->id = $id;
+        return $this;
+    }
 
     public function getId(): ?int
     {

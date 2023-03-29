@@ -22,6 +22,7 @@
     <nav>
 {#        <a href="{{ route("feed") }}">Accueil</a>#}
         {% if session.get('id') %}
+            <a href="{{ route("create_announcement") }}">Poster une annonce</a>
             <a href="{{ route("liked_announcements", {"userId" : session.get('id')}) }}">Mes favoris</a>
             <a href="{{ route("profil_user", {"userId" : session.get('id')}) }}">Profil</a>
             <a href="{{ route("logout_user") }}">Déconnexion</a>

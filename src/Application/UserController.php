@@ -5,7 +5,6 @@ namespace TheFeed\Application;
 use Framework\Application\Controller;
 use TheFeed\Business\Services\MailService;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use TheFeed\Business\Exception\ServiceException;
 
 class UserController extends Controller
@@ -66,24 +65,51 @@ class UserController extends Controller
         return $this->redirectToRoute('feed');
     }
 
-    public function profil($userId) {
+    public function profil() {
         $userService = $this->container->get('user_service');
-        $user = $userService->getUser($userId);
-
-        if($user != null && $userService->estConnecte() && ( in_array("ADMIN", $user->getRoles())|| $userService->getUserId() == $userId)){
+        if($userService->estConnecte()){
+            $user = $userService->getUser($userService->getUserId());
             return $this->render("Users/profil.html.twig", ["user" => $user]);
         }
-        return $this->redirectTo("login_user");
+        return $this->redirectToRoute("login_user");
     }
 
-    public function annoucementsLiked($userId) {
+    public function annoucementsLiked() {
         $userService = $this->container->get('user_service');
-        $user = $userService->getUser($userId);
-        if($user != null){
+        if($userService->estConnecte()){
+            $user = $userService->getUser($userService->getUserId());
             return $this->render("Users/liked.html.twig", [
                 "liked" => $user->getLikedAnnouncements()
             ]);
         }
         return $this->redirectTo("login_user");
+    }
+
+    public function update() {
+        $userService = $this->container->get('user_service');
+        if($userService->estConnecte()){
+            $user = $userService->getUser($userService->getUserId());
+            return $this->render("Users/update.html.twig", ["user" => $user]);
+        }
+        return $this->redirectTo("list_announcement");
+    }
+
+    public function submitUpdate(Request $request) {
+        $firstname = $request->get("firstname");
+        $lastname = $request->get("lastname");
+        $tel = $request->get("tel");
+        $passwordClair = $request->get("password");
+        $userService = $this->container->get('user_service');
+        try {
+            $userService->updateConnectedUser($firstname, $lastname, $passwordClair, $tel);
+            $this->addFlash("success","Modification réussie!");
+            echo "oui";
+
+            return $this->redirectToRoute('profil_user');
+        }
+        catch (ServiceException $e) {
+            $this->addFlash("error",$e->getMessage());
+            return $this->render("Users/update.html.twig", ["user" => ["firstname" => $firstname, "email" => $adresseMail, "lastname" => $lastname, "tel" => $tel]]);
+        }
     }
 }

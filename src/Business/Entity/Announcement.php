@@ -38,7 +38,7 @@ class Announcement
     private ?int $price = null;
 
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'likedAnnouncements')]
-    private Collection $usersliked;
+                                                                            private Collection $usersliked;
 
     #[ORM\ManyToOne(inversedBy: 'announcements')]
     #[ORM\JoinColumn(nullable: false)]
@@ -171,23 +171,6 @@ class Announcement
     public function getPostalcode(): ?int
     {
         return $this->postalcode;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getState(): ?string
-    {
-        return $this->state;
-    }
-
-    /**
-     * @param string|null $state
-     */
-    public function setState(?string $state): Announcement
-    {
-        $this->state = $state;
-        return $this;
     }
 
     /**

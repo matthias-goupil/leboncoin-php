@@ -33,7 +33,7 @@ CREATE TABLE `publications` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `utilisateurs`
+-- Structure de la table `annonces`
 --
 
 CREATE TABLE `utilisateurs` (
@@ -53,7 +53,7 @@ ALTER TABLE `publications`
   ADD KEY `fk_auteur` (`idAuteur`);
 
 --
--- Index pour la table `utilisateurs`
+-- Index pour la table `annonces`
 --
 ALTER TABLE `utilisateurs`
   ADD PRIMARY KEY (`idUtilisateur`);
@@ -69,7 +69,7 @@ ALTER TABLE `publications`
   MODIFY `idPublication` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT pour la table `utilisateurs`
+-- AUTO_INCREMENT pour la table `annonces`
 --
 ALTER TABLE `utilisateurs`
   MODIFY `idUtilisateur` int(11) NOT NULL AUTO_INCREMENT;
