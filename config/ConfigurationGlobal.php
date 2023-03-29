@@ -151,11 +151,11 @@ class ConfigurationGlobal
                 "_controller" => "publication_controller::test",
             ]
         ],
-        "feedPDF" => [
-            "path" => "/pdf",
+        "announcement_pdf" => [
+            "path" => "/announcement/{idAnnouncement}/pdf",
             "methods" => ["GET"],
             "parameters" => [
-                "_controller" => "publication_controller::feedPDF",
+                "_controller" => "announcement_controller::pdf",
             ]
         ],
         "submit_feedy" => [

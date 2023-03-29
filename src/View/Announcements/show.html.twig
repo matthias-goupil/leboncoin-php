@@ -3,7 +3,17 @@
 {% block page_title %}Annonce{% endblock %}
 
 {% block page_content %}
-    <main>
-        <p>{{ announcement.name }}</p>
+    <main class="annonce">
+        <h1>{{ announcement.name }}</h1>
+        <img src="{{ announcement.picture }}" alt="announcement.name" class="annonce-photo"/>
+            <p class="annonce-price">{{ announcement.price }} €</p>
+            <p class="annonce-details">{{ announcement.description }}</p>
+            <div class="annonce-adress">
+                <p>{{ announcement.adress }}</p>
+                <p>{{ announcement.city }} {{ announcement.postalcode }}</p>
+            </div>
+
+        <a href="{{ route('announcement_pdf', {'idAnnouncement':announcement.id }) }}">Annonce en PDF</a>
+
     </main>
 {% endblock %}

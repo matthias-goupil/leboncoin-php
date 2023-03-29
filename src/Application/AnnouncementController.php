@@ -3,6 +3,8 @@
 namespace TheFeed\Application;
 use \Framework\Application\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use TheFeed\Business\Services\PDFService;
+use Symfony\Component\HttpFoundation\Response;
 
 class AnnouncementController extends Controller
 {
@@ -60,4 +62,26 @@ class AnnouncementController extends Controller
     public function removeFromFavorite($idAnnouncement) {
 
     }
+
+    public function pdf($idAnnouncement)
+    {
+        $service = $this->container->get('announcement_service');
+        $announcement = $service->getAnnouncement($idAnnouncement);
+
+        // Récupère le HTML généré par le template et remplace les variables par des valeurs statiques
+        $html = $this->render('Announcements/show.html.twig', [
+            'announcement' => $announcement,
+        ]);
+
+        $pdfService = $this->container->get('pdf_generator');
+        $pdfContent = $pdfService->generatePdf($html);
+
+        $response = new Response($pdfContent);
+
+        // Définit le type de contenu du PDF
+        $response->headers->set('Content-Type', 'application/pdf');
+
+        return $response;
+    }
+
 }
