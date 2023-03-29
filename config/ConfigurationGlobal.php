@@ -229,6 +229,7 @@ class ConfigurationGlobal
 //                "_logged" => true,
 //            ]
 //        ],
+
     ];
 
 //"connexion" => [
@@ -346,9 +347,8 @@ class ConfigurationGlobal
             ]);
         $container->register('mail_service', MailService::class)
             ->setArguments([
-                new PHPMailer(),
-                "%from_email%",
-                "%from_name%"
+                "Steffan@lemauvaiscoin.com",
+                "Steffan LeMauvaisCoin"
             ]);
         $container->register('pdf_generator', PDFService::class);
         $container->register('app_listener', AppListener::class)
@@ -356,5 +356,10 @@ class ConfigurationGlobal
                 new Reference('utilisateur_service'),
                 new Reference('twig'),
                 new Reference('url_generator')]);
+        $container->register('category_service', CategoryService::class)
+            ->setArguments([
+                new Reference('repository_manager'),
+                new Reference('user_service'),
+            ]);
     }
 }

@@ -1,12 +1,4 @@
 <?php
-/**
- * EHS
- *
- * @category  EHS
- * @package   TheFeed\Business\Services
- * @author    Mehdi Sahari <mesah@smile.fr>
- * @copyright 2023 Smile
- */
 namespace TheFeed\Business\Services;
 
 use TCPDF;
@@ -28,6 +20,9 @@ class PDFService
     {
         // Ajoutez le contenu HTML au PDF
         $this->pdf->AddPage();
+        $this->pdf->SetPrintHeader(false); // désactiver l'en-tête
+        $this->pdf->SetPrintFooter(false); // désactiver le pied de page
+        $this->pdf->SetHeaderData('', 0, '', ''); // Désactiver l'en-tête
         $this->pdf->writeHTML($html, true, false, true, false, '');
 
         // Génère le PDF et retourne son contenu

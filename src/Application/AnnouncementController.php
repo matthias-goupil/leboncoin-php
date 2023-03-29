@@ -6,6 +6,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use TheFeed\Business\Entity\Category;
 use TheFeed\Business\Entity\User;
+use TheFeed\Business\Services\PDFService;
+
 
 class AnnouncementController extends Controller
 {
@@ -13,10 +15,12 @@ class AnnouncementController extends Controller
     public function list() {
         $announcementService = $this->container->get('announcement_service');
         $announcements = $announcementService->getAll();
-        $userService = $this->container->get('user_service');
+        $categoryService = $this->container->get('category_service');
+        $categories = $categoryService->getCategories();
+
         return $this->render("Announcements/list.html.twig", [
             "announcements" => $announcements,
-            "liked" => [],
+            "categories" => $categories
         ]);
     }
 
@@ -24,7 +28,17 @@ class AnnouncementController extends Controller
         $search = $request->get('search');
         $city = $request->get('city');
         $category = $request->get('category');
-        return $this->render("Announcements/list.html.twig");
+
+        $announcementService = $this->container->get('announcement_service');
+        $announcements = $announcementService->search($category, $search, $city);
+
+        $categoryService = $this->container->get('category_service');
+        $categories = $categoryService->getCategories();
+
+        return $this->render("Announcements/list.html.twig", [
+            "announcements" => $announcements,
+            "categories" => $categories
+        ]);
     }
 
     public function show($idAnnouncement) {
@@ -110,4 +124,26 @@ class AnnouncementController extends Controller
     public function removeFromFavorite($idAnnouncement) {
 
     }
+
+    public function pdf($idAnnouncement)
+    {
+        $service = $this->container->get('announcement_service');
+        $announcement = $service->getAnnouncement($idAnnouncement);
+
+        // Récupère le HTML généré par le template et remplace les variables par des valeurs statiques
+        $html = $this->render('Announcements/show.html.twig', [
+            'announcement' => $announcement,
+        ]);
+
+        $pdfService = $this->container->get('pdf_generator');
+        $pdfContent = $pdfService->generatePdf($html);
+
+        $response = new Response($pdfContent);
+
+        // Définit le type de contenu du PDF
+        $response->headers->set('Content-Type', 'application/pdf');
+
+        return $response;
+    }
+
 }

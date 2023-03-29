@@ -336,3 +336,52 @@ main {
     font-size: 20px;
     margin : 20px 0;
 }
+
+/* ANNONCE */
+.annonce {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.annonce-photo {
+    width: 400px;
+    height: 300px;
+    object-fit: cover;
+    margin-bottom: 20px;
+}
+
+.annonce-price {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.annonce-details {
+    font-size: 1rem;
+    margin-bottom: 20px;
+}
+
+.annonce-adress {
+    margin-top: 20px;
+    font-size: 1.2rem;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.annonce-pdf-download {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+.annonce-pdf-download:hover {
+    background-color: #3e8e41;
+}
