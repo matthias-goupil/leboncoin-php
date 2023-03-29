@@ -25,7 +25,7 @@ function addFeedy(feedyArray) {
     var aLink = document.createElement("a");
     aLink.href = pagePersoBase + feedyArray["utilisateur"]["idUtilisateur"];
     var img = document.createElement("img");
-    img.src = imgBase+"/utilisateurs/" + feedyArray["utilisateur"]["profilePictureName"];
+    img.src = imgBase+"/annonces/" + feedyArray["utilisateur"]["profilePictureName"];
     img.classList.add("avatar")
     var infos = document.createElement("div");
     infos.classList.add("feedy-info");

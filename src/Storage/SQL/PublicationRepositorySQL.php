@@ -21,7 +21,7 @@ class PublicationRepositorySQL implements Repository
     public function getAll() : array {
         $statement = $this->pdo->prepare("SELECT idPublication, message, date, idUtilisateur, login, profilePictureName 
                                                 FROM publications p 
-                                                JOIN utilisateurs u on p.idAuteur = u.idUtilisateur
+                                                JOIN annonces u on p.idAuteur = u.idUtilisateur
                                                 ORDER BY date DESC");
         $statement->execute();
 
@@ -49,7 +49,7 @@ class PublicationRepositorySQL implements Repository
         ];
         $statement = $this->pdo->prepare("SELECT idPublication, message, date, idUtilisateur, login, profilePictureName 
                                                 FROM publications p 
-                                                JOIN utilisateurs u on p.idAuteur = u.idUtilisateur
+                                                JOIN annonces u on p.idAuteur = u.idUtilisateur
                                                 WHERE idAuteur = :idAuteur                    
                                                 ORDER BY date DESC");
         $statement->execute($values);
@@ -90,7 +90,7 @@ class PublicationRepositorySQL implements Repository
         ];
         $statement = $this->pdo->prepare("SELECT idPublication, message, date, idUtilisateur, login, profilePictureName  
                                                 FROM publications p
-                                                JOIN utilisateurs u on p.idAuteur = u.idUtilisateur
+                                                JOIN annonces u on p.idAuteur = u.idUtilisateur
                                                 WHERE idPublication = :idPublication");
         $statement->execute($values);
         $data = $statement->fetch();

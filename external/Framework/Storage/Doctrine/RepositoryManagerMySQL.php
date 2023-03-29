@@ -2,6 +2,8 @@
 namespace Framework\Storage\Doctrine;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Exception\ORMException;
+use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMSetup;
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
 use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
@@ -37,6 +39,11 @@ class RepositoryManagerMySQL
     public function flush() {
         $this->entityManager->flush();
     }
+
+    public function remove($entity) {
+       $this->entityManager->remove($entity);
+    }
+
     public function bin() {
         ConsoleRunner::run(
             new SingleManagerProvider($this->entityManager)

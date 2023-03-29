@@ -3,7 +3,7 @@ debug: false
 appRoot: "../src"
 
 parameters:
-  profile_pictures_storage: "../web/assets/img/utilisateurs"
+  profile_pictures_storage: "../web/assets/img/annonces"
   secret_seed: "qh7878qfsfsr_ttezo!"
 
 views: "View"
@@ -59,7 +59,7 @@ routes:
       _controller: "utilisateur_controller::getInscription"
       _force_not_logged: true
   page_perso:
-    path: "/utilisateurs/page/{idUser}"
+    path: "/annonces/page/{idUser}"
     methods:
       - "GET"
     parameters:
