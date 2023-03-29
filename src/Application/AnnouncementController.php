@@ -14,10 +14,10 @@ class AnnouncementController extends Controller
 
     public function list() {
         $announcementService = $this->container->get('announcement_service');
+
         $announcements = $announcementService->getAll();
         $categoryService = $this->container->get('category_service');
         $categories = $categoryService->getCategories();
-
         return $this->render("Announcements/list.html.twig", [
             "announcements" => $announcements,
             "categories" => $categories

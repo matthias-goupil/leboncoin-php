@@ -70,6 +70,21 @@ class ConfigurationGlobal
     ];
 
     const routes = [
+        "announcement_pdf" => [
+            "path" => "/announcement/{idAnnouncement}/pdf",
+            "methods" => ["GET"],
+            "parameters" => [
+                "_controller" => "announcement_controller::pdf",
+            ]
+        ],
+        "search_announcements" => [
+            "path" => "/search",
+            "methods" => ["GET"],
+            "parameters" => [
+                "_controller" => "announcement_controller::search",
+                //                "_logged" => true,
+            ]
+        ],
         "add_liked_announcements" => [
             "path" => "/announcement/{idAnnouncement}/addLike",
             "methods" => ["GET"],

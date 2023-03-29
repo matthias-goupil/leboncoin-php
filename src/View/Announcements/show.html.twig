@@ -5,7 +5,7 @@
 {% block page_content %}
     <main class="annonce">
         <h1>{{ announcement.name }}</h1>
-        <img src="{{ announcement.picture }}" alt="announcement.name" class="annonce-photo"/>
+        <img src="{{ asset(announcement.picture) }}" alt="announcement.name" class="annonce-photo"/>
             <p class="annonce-price">{{ announcement.price }} €</p>
             <p class="annonce-details">{{ announcement.description }}</p>
             <div class="annonce-adress">

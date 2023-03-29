@@ -27,7 +27,7 @@
                 <div>
                     <a class="announcement"
                        href="{{ route("show_announcement", {"idAnnouncement": announcement.id}) }}">
-                        <img src="{{ announcement.picture }}" alt=""/>
+                        <img src="{{ asset(announcement.picture) }}" alt=""/>
                         <div>
                             <p class="title">{{ announcement.name }}</p>
                             <p class="price">{{ announcement.price }} €</p>
