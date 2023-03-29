@@ -6,6 +6,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use TheFeed\Business\Services\PDFService;
 use TheFeed\Business\Services\MailService;
 use Framework\Services\ServerSessionManager;
+use TheFeed\Business\Services\CategoryService;
 use Symfony\Component\DependencyInjection\Reference;
 use TheFeed\Application\AnnouncementController;
 use TheFeed\Application\API\PublicationControllerAPI;
@@ -240,6 +241,14 @@ class ConfigurationGlobal
                 "_logged" => true,
             ]
         ],
+        "search_announcements" => [
+            "path" => "/search",
+            "methods" => ["GET"],
+            "parameters" => [
+                "_controller" => "announcement_controller::search",
+                //                "_logged" => true,
+            ]
+        ],
     ];
 
     const listeners = [
@@ -290,5 +299,10 @@ class ConfigurationGlobal
                 new Reference('utilisateur_service'),
                 new Reference('twig'),
                 new Reference('url_generator')]);
+        $container->register('category_service', CategoryService::class)
+            ->setArguments([
+                               new Reference('repository_manager'),
+                               new Reference('user_service'),
+                           ]);
     }
 }

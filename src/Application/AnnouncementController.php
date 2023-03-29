@@ -12,8 +12,13 @@ class AnnouncementController extends Controller
     public function list() {
         $announcementService = $this->container->get('announcement_service');
         $announcements = $announcementService->getAll();
+
+        $categoryService = $this->container->get('category_service');
+        $categories = $categoryService->getCategories();
+
         return $this->render("Announcements/list.html.twig", [
-            "announcements" => $announcements
+            "announcements" => $announcements,
+            "categories" => $categories
         ]);
     }
 
@@ -21,7 +26,17 @@ class AnnouncementController extends Controller
         $search = $request->get('search');
         $city = $request->get('city');
         $category = $request->get('category');
-        return $this->render("Announcements/list.html.twig");
+
+        $announcementService = $this->container->get('announcement_service');
+        $announcements = $announcementService->search($category, $search, $city);
+
+        $categoryService = $this->container->get('category_service');
+        $categories = $categoryService->getCategories();
+
+        return $this->render("Announcements/list.html.twig", [
+            "announcements" => $announcements,
+            "categories" => $categories
+        ]);
     }
 
     public function show($idAnnouncement) {

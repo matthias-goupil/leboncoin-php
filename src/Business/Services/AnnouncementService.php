@@ -61,4 +61,36 @@ class AnnouncementService
 
     }
 
+    public function search($category = null, $search = null, $city = null)
+    {
+        $qb = $this->repository->createQueryBuilder('a');
+
+        if ($category !== null && $category !== '') {
+            $qb->andWhere('a.category = :category')
+                ->setParameter('category', $category);
+        }
+
+        if ($search !== null && $search !== '') {
+            $qb->andWhere($qb->expr()->orX(
+                $qb->expr()->like('a.name', ':search'),
+                $qb->expr()->like('a.description', ':search')
+            ))
+                ->setParameter('search', '%' . $search . '%');
+        }
+
+        if ($city !== null && $city !== '') {
+            $qb->andWhere('a.city = :city')
+                ->setParameter('city', $city);
+        }
+
+        // Ajout d'une condition pour retourner toutes les annonces si aucun paramètre n'est renseigné
+        if ($category === null && ($search === null || $search === '') && ($city === null || $city === '')) {
+            return $this->repository->findAll();
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+
+
 }
