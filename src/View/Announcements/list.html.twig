@@ -5,13 +5,13 @@
 {% block page_content %}
     <main>
         <div id="search-section">
-            <form>
-                    <select name="category">
-                        <option value="" selected>Catégories</option>
-                        {% for category in categories %}
-                            <option value="{{ category.id }}">{{ category.name }}</option>
-                        {% endfor %}
-                    </select>
+            <form method="GET" action="{{ route('search_announcements') }}">
+                <select name="category">
+                    <option value="" selected>Catégories</option>
+                    {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                    {% endfor %}
+                </select>
 
                 <input type="text" placeholder="Que recherchez-vous ?" name="search"/>
 
