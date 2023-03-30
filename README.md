@@ -22,11 +22,6 @@ Pour les utilisateurs authentifiés :
   + modifier une annonce
   + supprimer une annonce postée 
   + accéder à l'historique des annonces postées
- 
-Pour les administrateurs :
-  + ajouter / supprimer / modifier / une annonce à la place d'un utilisateur
-  + supprimer un utilisateur
-  + modifier les données personnelles d'un utilisateur
   
 Lorsque qu'un utilisateur se sera inscrit, un email lui sera envoyé afin qu'il confirme son inscription.
 
