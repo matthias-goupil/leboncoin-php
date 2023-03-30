@@ -9,18 +9,19 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use TheFeed\Business\Services\UserService;
 use TheFeed\Business\Services\UtilisateurService;
 use Twig\Environment;
 
 class AppListener implements EventSubscriberInterface
 {
-    private UtilisateurService $serviceUtilisateur;
+    private UserService $serviceUtilisateur;
 
     private Environment $twig;
 
     private UrlGeneratorInterface $urlGenerator;
 
-    public function __construct(UtilisateurService $serviceUtilisateur, Environment $twig, UrlGeneratorInterface $urlGenerator)
+    public function __construct(UserService $serviceUtilisateur, Environment $twig, UrlGeneratorInterface $urlGenerator)
     {
         $this->serviceUtilisateur = $serviceUtilisateur;
         $this->twig = $twig;
@@ -51,10 +52,10 @@ class AppListener implements EventSubscriberInterface
             $response = new Response($this->twig->render('Erreurs/notFound.html.twig'), $status);
         }
         else if($status == 401) {
-            $response = new RedirectResponse($this->urlGenerator->generate('connexion'));
+            $response = new RedirectResponse($this->urlGenerator->generate('login_user'));
         }
         else if($status == 403) {
-            $response = new RedirectResponse($this->urlGenerator->generate('feed'));
+            $response = new RedirectResponse($this->urlGenerator->generate('announcements_list'));
         }
         else {
             $response = new Response($this->twig->render('Erreurs/error.html.twig', ['message' => $event->getException()->getMessage()]), $status);

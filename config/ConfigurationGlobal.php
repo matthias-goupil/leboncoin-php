@@ -45,8 +45,6 @@ class ConfigurationGlobal
     const views = "View";
 
     const repositories = [
-        Publication::class => PublicationRepositorySQL::class,
-        Utilisateur::class => UtilisateurRepositorySQL::class,
         User::class => UserRepository::class,
         Announcement::class => AnnouncementRepository::class,
         Category::class => CategoryRepository::class
@@ -63,10 +61,6 @@ class ConfigurationGlobal
         "user_controller" => UserController::class,
         "category_controller" => CategoryController::class,
         "announcement_controller" => AnnouncementController::class,
-        "publication_controller" => PublicationController::class,
-        "utilisateur_controller" => UtilisateurController::class,
-        "publication_controller_api" => PublicationControllerAPI::class,
-        "utilisateur_controller_api" => UtilisateurControllerAPI::class,
     ];
 
     const routes = [
@@ -82,7 +76,6 @@ class ConfigurationGlobal
             "methods" => ["GET"],
             "parameters" => [
                 "_controller" => "announcement_controller::search",
-                //                "_logged" => true,
             ]
         ],
         "add_liked_announcements" => [
@@ -90,6 +83,14 @@ class ConfigurationGlobal
             "methods" => ["GET"],
             "parameters" => [
                 "_controller" => "announcement_controller::addToFavorite",
+                "_logged" => true,
+            ]
+        ],
+        "remove_liked_announcements" => [
+            "path" => "/announcement/{idAnnouncement}/removeLike",
+            "methods" => ["GET"],
+            "parameters" => [
+                "_controller" => "announcement_controller::removeFromFavorite",
                 "_logged" => true,
             ]
         ],
@@ -142,7 +143,6 @@ class ConfigurationGlobal
             "methods" => ["GET"],
             "parameters" => [
                 "_controller" => "announcement_controller::show",
-//                "_logged" => true,
             ]
         ],
 
@@ -152,7 +152,7 @@ class ConfigurationGlobal
             "methods" => ["GET"],
             "parameters" => [
                 "_controller" => "user_controller::annoucementsLiked",
-//                "_logged" => true,
+                "_logged" => true,
             ]
         ],
         "logout_user" => [
@@ -190,6 +190,7 @@ class ConfigurationGlobal
             "methods" => ["GET"],
             "parameters" => [
                 "_controller" => "user_controller::update",
+                "_logged" => true,
             ]
         ],
 
@@ -198,6 +199,7 @@ class ConfigurationGlobal
             "methods" => ["POST"],
             "parameters" => [
                 "_controller" => "user_controller::submitUpdate",
+                "_logged" => true,
             ]
         ],
         "login_user" => [
@@ -222,105 +224,7 @@ class ConfigurationGlobal
                 "_logged" => true,
             ]
         ],
-//        "test" => [
-//            "path" => "/test",
-//            "methods" => ["GET"],
-//            "parameters" => [
-//                "_controller" => "publication_controller::test",
-//            ]
-//        ],
-//        "feedPDF" => [
-//            "path" => "/pdf",
-//            "methods" => ["GET"],
-//            "parameters" => [
-//                "_controller" => "publication_controller::feedPDF",
-//            ]
-//        ],
-//        "submit_feedy" => [
-//            "path" => "/feedy",
-//            "methods" => ["POST"],
-//            "parameters" => [
-//                "_controller" => "publication_controller::submitFeedy",
-//                "_logged" => true,
-//            ]
-//        ],
-
     ];
-
-//"connexion" => [
-//"path" => "/connexion",
-//"methods" => ["GET"],
-//"parameters" => [
-//"_controller" => "utilisateur_controller::getConnexion",
-//"_force_not_logged" => true,
-//]
-//],
-//"deconnexion" => [
-//"path" => "/deconnexion",
-//"methods" => ["GET"],
-//"parameters" => [
-//"_controller" => "utilisateur_controller::deconnexion",
-//"_logged" => true,
-//]
-//],
-//"inscription" => [
-//"path" => "/inscription",
-//"methods" => ["GET"],
-//"parameters" => [
-//"_controller" => "utilisateur_controller::getInscription",
-//"_force_not_logged" => true,
-//]
-//],
-//"page_perso" => [
-//"path" => "/annonces/page/{idUser}",
-//"methods" => ["GET"],
-//"parameters" => [
-//"_controller" => "utilisateur_controller::pagePerso",
-//"idUser" => null,
-//]
-//],
-//"submit_inscription" => [
-//"path" => "/inscription",
-//"methods" => ["POST"],
-//"parameters" => [
-//"_controller" => "utilisateur_controller::submitInscription",
-//"_force_not_logged" => true,
-//]
-//],
-//"submit_connexion" => [
-//"path" => "/connexion",
-//"methods" => ["POST"],
-//"parameters" => [
-//"_controller" => "utilisateur_controller::submitConnexion",
-//"_force_not_logged" => true,
-//]
-//],
-//"submit_feedy_api" => [
-//"path" => "/api/feedy",
-//"methods" => ["POST"],
-//"parameters" => [
-//"_controller" => "publication_controller_api::submitFeedy",
-//"_logged" => true,
-//]
-//],
-//"remove_feedy_api" => [
-//"path" => "api/feedy/{idPublication}",
-//"methods" => ["DELETE"],
-//"parameters" => [
-//"_controller" => "publication_controller_api::removeFeedy",
-//"idPublication" => null,
-//"_logged" => true,
-//]
-//],
-//"remove_utilisateur_api" => [
-//"path" => "api/utilisateur/{idUser}",
-//"methods" => ["DELETE"],
-//"parameters" => [
-//"_controller" => "utilisateur_controller_api::removeUtilisateur",
-//"idUser" => null,
-//"_logged" => true,
-//]
-//],
     const listeners = [
         "app_listener"
     ];
@@ -347,19 +251,6 @@ class ConfigurationGlobal
                 new Reference('repository_manager'),
                 new Reference('user_service'),
             ]);
-
-        $container->register('publication_service', PublicationService::class)
-            ->setArguments([
-                new Reference('repository_manager'),
-                new Reference('utilisateur_service'),
-            ]);
-        $container->register('utilisateur_service', UtilisateurService::class)
-            ->setArguments([
-                new Reference('repository_manager'),
-                new Reference('session_manager'),
-                "%secret_seed%",
-                "%profile_pictures_storage%"
-            ]);
         $container->register('mail_service', MailService::class)
             ->setArguments([
                 "Steffan@lemauvaiscoin.com",
@@ -368,7 +259,7 @@ class ConfigurationGlobal
         $container->register('pdf_generator', PDFService::class);
         $container->register('app_listener', AppListener::class)
             ->setArguments([
-                new Reference('utilisateur_service'),
+                new Reference('user_service'),
                 new Reference('twig'),
                 new Reference('url_generator')]);
         $container->register('category_service', CategoryService::class)

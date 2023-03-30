@@ -62,14 +62,21 @@ class AnnouncementService
     }
 
     public function removeFromFavorite($idAnnouncement) {
-
+        $announcement = $this->getAnnouncement($idAnnouncement);
+        $userId = $this->serviceUtilisateur->getUserId();
+        if($userId == null){
+            throw new ServiceException("Le nom doit être compris entre 3 et 30 caractères!");
+        }
+        $user = $this->serviceUtilisateur->getUser($userId);
+        $user->removeLikedAnnouncement($announcement);
+        $this->repositoryManager->persist($user);
+        $this->repositoryManager->flush();
     }
 
     public function createAnnouncement($name, $description, $picture, $adress, $city, $postalcode, $price, Category $category, User $user) {
         if($name == null || $description == null || $picture == null || $adress == null || $city == null || $postalcode == null|| $price == null || $category == null || $user == null ) {
             throw new ServiceException("Données manquantes!");
         }
-
 
         $nameSize = strlen($name);
         if($nameSize < 2 || $nameSize > 180) {

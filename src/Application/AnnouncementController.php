@@ -118,11 +118,13 @@ class AnnouncementController extends Controller
     public function addToFavorite($idAnnouncement) {
         $serviceA = $this->container->get('announcement_service');
         $serviceA->addToFavorite($idAnnouncement);
-        return $this->redirectToRoute("liked_announcements");
+        return $this->redirectToRoute("announcements_list");
     }
 
     public function removeFromFavorite($idAnnouncement) {
-
+        $serviceA = $this->container->get('announcement_service');
+        $serviceA->removeFromFavorite($idAnnouncement);
+        return $this->redirectToRoute("announcements_list");
     }
 
     public function pdf($idAnnouncement)

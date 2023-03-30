@@ -211,6 +211,15 @@ main {
     margin-top: 10px;
 }
 
+.container {
+    position: relative;
+}
+
+.like {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+}
 .error-block {
     width: 50%;
     font-weight: bold;

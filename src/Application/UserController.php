@@ -35,7 +35,7 @@ class UserController extends Controller
             $mailService->sendMail($to, $subject, $body, $attachments);
 
             $this->addFlash("success","Inscription réeussie!");
-            return $this->redirectToRoute('feed');
+            return $this->redirectToRoute('announcements_list');
         } catch (ServiceException $e) {
             $this->addFlash("error", $e->getMessage());
             return $this->render("Users/register.html.twig", ["firstname" => $firstname, "email" => $adresseMail, "lastname" => $lastname, "tel" => $tel]);
@@ -52,7 +52,7 @@ class UserController extends Controller
         $userService = $this->container->get('user_service');
         try {
             $userService->login($email, $passwordClair);
-            return $this->redirectToRoute('feed');
+            return $this->redirectToRoute('announcements_list');
         } catch (ServiceException $exception) {
             $this->addFlash('error', $exception->getMessage());
             return $this->render('Users/login.html.twig',["email" => $email]);
@@ -62,7 +62,7 @@ class UserController extends Controller
     public function logout() {
         $userService = $this->container->get('user_service');
         $userService->logout();
-        return $this->redirectToRoute('feed');
+        return $this->redirectToRoute('announcements_list');
     }
 
     public function profil() {
@@ -82,7 +82,7 @@ class UserController extends Controller
                 "liked" => $user->getLikedAnnouncements()
             ]);
         }
-        return $this->redirectTo("login_user");
+        return $this->redirectToRoute("login_user");
     }
 
     public function update() {
@@ -91,7 +91,7 @@ class UserController extends Controller
             $user = $userService->getUser($userService->getUserId());
             return $this->render("Users/update.html.twig", ["user" => $user]);
         }
-        return $this->redirectTo("list_announcement");
+        return $this->redirectToRoute("announcements_list");
     }
 
     public function submitUpdate(Request $request) {

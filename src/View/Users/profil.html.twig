@@ -30,11 +30,11 @@
         <h2>Annonces postées</h2>
         <div id="anouncements-list">
             {% for announcement in user.announcements %}
-                <a class="announcement" href="#">
-                    <img src="{{ announcement.picture }}" alt=""/>
+                <a class="announcement" href="{{ route("show_announcement", {"idAnnouncement": announcement.id}) }}">
+                    <img src="{{ asset(announcement.picture) }}" alt=""/>
                     <div>
                         <p class="title">{{ announcement.name }}</p>
-                        <p class="price">Price €</p>
+                        <p class="price">{{ announcement.price}} €</p>
                         <div class="adress">
                             <p>{{ announcement.adress }}</p>
                             <p>{{ announcement.city }} {{ announcement.postalcode }}</p>
